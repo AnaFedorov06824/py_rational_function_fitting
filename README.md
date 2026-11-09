@@ -34,3 +34,10 @@ The pair (p, q) is only defined up to a non-zero scalar multiple. This library f
 ## The awkward edge
 
 If you pass fewer samples than `numerator_degree + denominator_degree + 1`, or if the samples are redundant (for example, all at the same x), `fit` raises `FitError` rather than returning a best-effort answer. That is deliberate: an exact fit that is not unique is not an exact fit. If you need a least-squares answer for noisy data, this library is the wrong tool.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
